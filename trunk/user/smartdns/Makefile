@@ -1,26 +1,18 @@
-SRC_NAME = smartdns-Release33
-THISDIR = $(shell pwd)
+THISDIR := $(shell pwd)
+SMARTDNS_URL_BASE :=  https://raw.githubusercontent.com/felix-fly/v2ray-padavan-doh/master/bin
 
-all: extract_test config_test
-	$(MAKE) -C $(SRC_NAME)
+SMARTDNS_NAME := smartdns
+SMARTDNS_URL := $(SMARTDNS_URL_BASE)/$(SMARTDNS_NAME)
 
-extract_test:
-	( if [ ! -d $(SRC_NAME) ]; then \
-		tar -xf $(SRC_NAME).tar.gz ; \
+all: download_test
+	@echo "$(SMARTDNS_NAME) build done!"
+
+download_test:
+	( if [ ! -f $(SMARTDNS_NAME) ]; then \
+		wget -t5 --timeout=20 --no-check-certificate $(SMARTDNS_URL); \
 	fi )
-
-config_test:
-	( if [ -f ./config_done ]; then \
-		echo "the same configuration"; \
-	else \
-		touch config_done; \
-	fi )
-
-clean:
-	if [ -f $(SRC_NAME)/Makefile ] ; then \
-		$(MAKE) -C $(SRC_NAME) clean ; \
-	fi ; \
-	rm -f config_done
 
 romfs:
-	$(ROMFSINST) -p +x $(THISDIR)/$(SRC_NAME)/src/smartdns /usr/bin/smartdns
+ifeq ($(CONFIG_FIRMWARE_INCLUDE_SMARTDNS),y)
+	$(ROMFSINST) -p +x $(THISDIR)/$(SMARTDNS_NAME) /usr/bin/$(SMARTDNS_NAME)
+endif
