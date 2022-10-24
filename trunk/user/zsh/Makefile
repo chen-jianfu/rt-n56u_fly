@@ -12,6 +12,6 @@ extract_test:
 romfs:
 ifeq ($(CONFIG_FIRMWARE_INCLUDE_ZSH),y)
 	$(ROMFSINST) -p +x $(THISDIR)/zsh/zsh /usr/bin/zsh
-	$(ROMFSINST) -p +x $(THISDIR)/zsh/lib/zsh /usr/lib/
+	$(ROMFSINST) -p +x $(THISDIR)/zsh/lib/* /usr/lib/
 	$(ROMFSINST) -p +x $(THISDIR)/zsh/share/zsh /usr/share/
 endif
