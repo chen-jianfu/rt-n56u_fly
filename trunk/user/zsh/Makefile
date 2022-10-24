@@ -5,8 +5,8 @@ all: extract_test
 	@echo "$(ZSH_NAME) install done!"
 
 extract_test:
-	( if [ ! -d $(SRC_NAME) ]; then \
-		tar zxf $(SRC_NAME).tar.gz ; \
+	( if [ ! -d $(ZSH_NAME) ]; then \
+		tar zxf $(ZSH_NAME).tar.gz ; \
 	fi )
 
 romfs:
