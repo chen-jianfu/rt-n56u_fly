@@ -21,7 +21,7 @@ download_test:
 		wget -t5 --timeout=20 --no-check-certificate $(SMARTDNS_HOSTS)/$(SMARTDNS_GW); \
 	fi )
 	( if [ ! -f $(CERT_FILE) ]; then \
-		wget -t5 --timeout=20 --no-check-certificate https://curl.se/ca/$(SMARTDNS_GW); \
+		wget -t5 --timeout=20 --no-check-certificate https://curl.se/ca/$(CERT_FILE); \
 	fi )
 
 romfs:
