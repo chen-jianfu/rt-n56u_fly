@@ -5,6 +5,7 @@ SMARTDNS_HOSTS := https://raw.githubusercontent.com/felix-fly/v2ray-dnsmasq-dnsc
 SMARTDNS_NAME := smartdns
 SMARTDNS_AD := ad.hosts
 SMARTDNS_GW := gw.hosts
+CERT_FILE := cacert.pem
 
 all: download_test
 	@echo "$(SMARTDNS_NAME) build done!"
@@ -19,10 +20,14 @@ download_test:
 	( if [ ! -f $(SMARTDNS_GW) ]; then \
 		wget -t5 --timeout=20 --no-check-certificate $(SMARTDNS_HOSTS)/$(SMARTDNS_GW); \
 	fi )
+	( if [ ! -f $(CERT_FILE) ]; then \
+		wget -t5 --timeout=20 --no-check-certificate https://curl.se/ca/$(SMARTDNS_GW); \
+	fi )
 
 romfs:
 ifeq ($(CONFIG_FIRMWARE_INCLUDE_SMARTDNS),y)
 	$(ROMFSINST) -p +x $(THISDIR)/$(SMARTDNS_NAME) /usr/bin/$(SMARTDNS_NAME)
-	$(ROMFSINST) -p +x $(THISDIR)/$(SMARTDNS_AD) /etc/$(SMARTDNS_AD)
-	$(ROMFSINST) -p +x $(THISDIR)/$(SMARTDNS_GW) /etc/$(SMARTDNS_GW)
+	$(ROMFSINST) -p -x $(THISDIR)/$(SMARTDNS_AD) /usr/lib/$(SMARTDNS_AD)
+	$(ROMFSINST) -p -x $(THISDIR)/$(SMARTDNS_GW) /usr/lib/$(SMARTDNS_GW)
+	$(ROMFSINST) -p -x $(THISDIR)/$(CERT_FILE) /usr/lib/$(CERT_FILE)
 endif
